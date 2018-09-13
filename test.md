@@ -1,4 +1,4 @@
 # OpenStreetMap Case Study
-```{python}
+```python
 print ("Hello")
 ```

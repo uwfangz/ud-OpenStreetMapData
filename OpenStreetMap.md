@@ -1,12 +1,15 @@
 
-#Wrangle OpenStreetMap Data
+# Wrangle OpenStreetMap Data
+
 ## Map area
+
 Bellevue, WA, United States
 * https://www.openstreetmap.org/relation/237868
 
 This is the map of the city I live in. I'm intersted to know what SQL queries would reveal about the database. 
 
 ## Problems encountered in the map
+
 * Incorrect postal codes (include street name, state, and incorrect formats of postal codes, e.g., *981-2*, and *980452*.
 * Inconsistent postal codes (Most postal codes are 5digit zip code, with some exceptions of 4digit zip code extensions following a hyphen. 
 * Overabbreviated street names

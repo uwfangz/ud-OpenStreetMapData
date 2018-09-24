@@ -1,10 +1,4 @@
-> tip:
->
-> 1. A pdf document containing your answers to the rubric questions. This file should document your data wrangling process.
-> 2. Your Python code you used in auditing and cleaning your dataset for the final project. You may also include the original Case Study scripts, but make sure it is clear which code was used for the project, and which applies to the lesson quizzes. We recommend including a Readme file to describe the contents of each file you include in your submission.
-> 3. A text file containing a link to the map position you wrangled in your project, a short description of the area and a reason for your choice.
-> 4. An .osm file containing a sample part of the map region you used (around 1 - 10 MB in size). See the notes below.
-> 5. A text file containing a list of Web sites, books, forums, blog posts, github repositories etc that you referred to or used in this submission (Add N/A if you did not use such resources).
+
 # Map area
 Bellevue, WA, United States
 * https://www.openstreetmap.org/relation/237868

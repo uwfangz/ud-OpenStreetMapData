@@ -1,17 +1,18 @@
 
-# Map area
+#Wrangle OpenStreetMap Data
+## Map area
 Bellevue, WA, United States
 * https://www.openstreetmap.org/relation/237868
 
 This is the map of the city I live in. I'm intersted to know what SQL queries would reveal about the database. 
 
-# Problems encountered in the map
+## Problems encountered in the map
 * Incorrect postal codes (include street name, state, and incorrect formats of postal codes, e.g., *981-2*, and *980452*.
 * Inconsistent postal codes (Most postal codes are 5digit zip code, with some exceptions of 4digit zip code extensions following a hyphen. 
 * Overabbreviated street names
 * Street names with "FIXME"
 
-## Postal Codes
+### Postal Codes
 
 Running the data against *audit_post_code.py*, I got the following results:
 
@@ -35,11 +36,11 @@ After searching the latituide and longitude values above in Google map, I got th
 
 Then I changed the value to "981-2" and ran the code again. However, this time, I didn't get anything. This zip code is under the "relations" structure. Considering the fact that the relations table is not included in the database file, I did not update the value. 
 
-## Street Names
+### Street Names
 
 There are quite a few street names ending with house/apartment/suite numbers. There's a street name ending with "wa". The whole entry is *"144th pl ne bellevue wa"*. Here, "wa" should refer to the state name and "bellevue" is the city name. I would change this entry to "144 pl ne" when I clean the data. 
 
-### Overabbreviated and misspelled street names
+#### Overabbreviated and misspelled street names
 
 I've created a *mapping* variable to map out the words that needs correction, e.g., words that are not capilized or misspelled and abbreviated. After having my *mapping* variable, I used the following function to correct them in *update_street_names*:
 
@@ -58,7 +59,7 @@ def update(name, mapping):
 ```
 This would update all overabbreviated street names, i.e., *"144th pl ne"* becoming *"144th Place Northeast"*.
 
-### FIXME street names
+#### FIXME street names
 
 In addition, there are 8 street names that have values as "FIXME". According to OpenStreetMap Wiki, it is a "description of a (possible) error in the map". I looked up the street names using the latitude and longitude values. 
 
@@ -83,7 +84,7 @@ Here's what I got:
 Using google map, I've found that these nodes are all on the same street, *"235th Avenue Northeast"*.
 So I added *{"FIXME": "235th Avenue Northeast"}* to my *mapping* variable before I started to clean the data.
 
-# Overview of the Data
+## Overview of the Data
 
 ### File Sizes
 
@@ -148,7 +149,7 @@ FROM
 	HAVING num = 1) u;
 ```
 386
-# Additional Data Exploration
+## Additional Data Exploration
 
 ### Top 10 appearing amenities
 

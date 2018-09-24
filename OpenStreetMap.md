@@ -24,6 +24,9 @@ Running the data against *audit_post_code.py*, I got the following results:
 ```Python
 {'980452': 1, '981-2': 1, 'W Lake Sammamish Pkwy NE': 1, 'WA': 2}
 ```
+There are street name, state name, and incorrect formats of zip codes in this dataset. I'm going to fix them. For the street name, I'm going to change the 'k' value to 'addr:street'; likewise, for the state name, I'm going to change the 'k' value to 'addr:state'.
+
+So let's take a look at the incorrect zip codes. Running the SQL query, I can get the latitude and longitude values of the node/way the 'addr:postcode' tag is attached to. So here I first run the query with "980452" 
 
 ```Sql
 SELECT nodes.lat, nodes.lon
@@ -31,18 +34,16 @@ FROM nodes
     JOIN (SELECT DISTINCT(id) FROM nodes_tags WHERE value='980452') i
     ON nodes.id=i.id;
 ```
+```Sql
 47.6732445|-122.1196970
+```
+After searching the latituide and longitude values above in Google map, I got the correct zip code 98052. 
 
-After searching the latituide and longitude values in Google map, I got the zipcode 98052. Therefore, I'm going to correct "980452" to "98052". 
-
-Then I changed the value to "981-2" and run the code again. However, this time, I didn't get anything. This zipcode is under the "relations" structure. Considering the fact that the relations table is not included in the 
-
+Then I changed the value to "981-2" and ran the code again. However, this time, I didn't get anything. This zip code is under the "relations" structure. Considering the fact that the relations table is not included in the database file, I did not update the value. 
 
 ## Street Names
 
-There are quite a few street names ending with house/apartment/suite numbers. Since these numbers can be considered as part of the streets, I'm not going to fix these in this project. 
-
-There's a street name entry ending with "wa". The full entry is *"144th pl ne bellevue wa"*. Here, "wa" here should refer to the state name and "bellevue" is the city name. I'm going to change this entry to "144 pl ne" when I clean the data. 
+There are quite a few street names ending with house/apartment/suite numbers. There's a street name ending with "wa". The whole entry is *"144th pl ne bellevue wa"*. Here, "wa" should refer to the state name and "bellevue" is the city name. I would change this entry to "144 pl ne" when I clean the data. 
 
 ### Overabbreviated and misspelled street names
 
@@ -73,7 +74,7 @@ FROM nodes
     JOIN (SELECT DISTINCT(id) FROM nodes_tags WHERE value='FIXME') i
     ON nodes.id=i.id;
 ```
-Here's what I get:
+Here's what I got:
 
 ```sql
 1191705889|47.6170688|-122.0261962
@@ -85,8 +86,8 @@ Here's what I get:
 1191706019|47.6172568|-122.0269602
 1191706040|47.6172459|-122.0270917
 ```
-Using google map, I find that these nodes are all on the same street, *"235th Avenue Northeast"*.
-So I will add *{"FIXME": "235th Avenue Northeast"}* to my *mapping* variable before I start to clean the data.
+Using google map, I've found that these nodes are all on the same street, *"235th Avenue Northeast"*.
+So I added *{"FIXME": "235th Avenue Northeast"}* to my *mapping* variable before I started to clean the data.
 
 # Overview of the Data
 
@@ -280,5 +281,5 @@ Xanadu 2.0
 ```
 
 # Conclusion
-
+I’ve cleaned most parts of the data for this project. However, there are some parts that I didn’t touch. For instance, when I try to see the most popular cafes in Bellevue, I’ve discovered that some cafes have location in their names, e.g., “Zoka Coffee”, “Zoka Coffee - Kirkland”. I know that they are actually the same cafes, but since they have different location attached to the cafe name, SQL query counts them as two different cafes. If my analysis focuses on the cafes in Bellevue, I need to do a close auditing and cleaning on the cafe names.  
 

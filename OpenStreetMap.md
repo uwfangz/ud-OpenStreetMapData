@@ -148,11 +148,10 @@ FROM
 	HAVING num = 1) u;
 ```
 386
+# Additional Data Exploration
 
-# Other ideas about the datasets
-
-## Additional Data Exploration
 ### Top 10 appearing amenities
+
 ```sql
 sqlite> SELECT value, COUNT(*) as num
 FROM nodes_tags

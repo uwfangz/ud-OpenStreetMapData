@@ -293,5 +293,6 @@ Xanadu 2.0
 ```
 
 # Conclusion
-I’ve cleaned most parts of the data for this project. However, there are some parts that I didn’t touch. For instance, when I try to see the most popular cafes in Bellevue, I’ve discovered that some cafes have location in their names, e.g., “Zoka Coffee”, “Zoka Coffee - Kirkland”. I know that they are actually the same cafes, but since they have different location attached to the cafe name, SQL query counts them as two different cafes. If my analysis focuses on the cafes in Bellevue, I need to do a close auditing and cleaning on the cafe names.  
+
+I’ve cleaned most parts of the data for this project. However, there are some parts that I didn’t touch. For instance, when I try to see the most popular cafes in Bellevue, I’ve discovered that some cafes have location in their names, e.g., “Zoka Coffee”, “Zoka Coffee - Kirkland”. I know that they are actually the same cafe, but since they have different location attached to the cafe name, SQL query counts them as two different cafes. If my analysis focuses on the cafes in Bellevue, I need to do a close auditing and cleaning on the cafe names.  
 

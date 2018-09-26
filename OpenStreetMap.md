@@ -10,10 +10,10 @@ This is the map of the city I live in. I'm intersted to know what SQL queries wo
 
 ## Problems encountered in the map
 
-* Problematic formats of postal codes (include street name, state, and problematic formats of postal codes, e.g., *"981-2"*, and *"980452"*.)
-* Inconsistent postal codes (Most postal codes are 5-digit, with some exceptions of 4-digit extensions following a hyphen.) 
+* [Problematic formats of postal codes](#postal-codes) (include street name, state, and problematic formats of postal codes, e.g., *"981-2"*, and *"980452"*.)
+* [Inconsistent postal codes](#postal-codes) (Most postal codes are 5-digit, with some exceptions of 4-digit extensions following a hyphen.) 
 * [Overabbreviated street names](#overabbreviated-and-misspelled-street-names)
-* [Street names with "FIXME"](#FIXME-street-names)
+* [Street names with "FIXME"](#fixme-street-names)
 
 ### Postal Codes
 

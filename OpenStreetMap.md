@@ -10,21 +10,21 @@ This is the map of the city I live in. I'm intersted to know what SQL queries wo
 
 ## Problems encountered in the map
 
-* Incorrect postal codes (include street name, state, and incorrect formats of postal codes, e.g., *981-2*, and *980452*.
-* Inconsistent postal codes (Most postal codes are 5digit zip code, with some exceptions of 4digit zip code extensions following a hyphen. 
-* Overabbreviated street names
-* Street names with "FIXME"
+* Problematic formats of postal codes (include street name, state, and problematic formats of postal codes, e.g., *"981-2"*, and *"980452"*.)
+* Inconsistent postal codes (Most postal codes are 5-digit, with some exceptions of 4-digit extensions following a hyphen.) 
+* [Overabbreviated street names](#overabbreviated-and-misspelled-street-names)
+* [Street names with "FIXME"](#FIXME-street-names)
 
 ### Postal Codes
 
-Running the data against *audit_post_code.py*, I got the following results:
+Running the data against *audit_post_code.py*, I get the following results:
 
 ```Python
 {'980452': 1, '981-2': 1, 'W Lake Sammamish Pkwy NE': 1, 'WA': 2}
 ```
-There are street name, state name, and incorrect formats of zip codes in this dataset. I'm going to fix them. For the street name, I'm going to change the 'k' value to 'addr:street'; likewise, for the state name, I'm going to change the 'k' value to 'addr:state'.
+There are street name, state name, and problematic formats of zip codes in this dataset. First, I need to categorize the data correctly. For the street name and state name, I can change their 'k' values to 'addr:street' and 'addr:state' respectivley so that they won't appear as post codes. 
 
-So let's take a look at the incorrect zip codes. Running the SQL query, I can get the latitude and longitude values of the node/way the 'addr:postcode' tag is attached to. So here I first run the query with "980452" 
+Then I try to figure out the correct zip codes for *"980452'* and *"981-2"*. Running the SQL query, I can get the latitude and longitude values of the node the *'addr:postcode'* tag is attached to. So here I first run the query with *"980452'*: 
 
 ```Sql
 SELECT nodes.lat, nodes.lon
@@ -35,9 +35,24 @@ FROM nodes
 ```Sql
 47.6732445|-122.1196970
 ```
-After searching the latituide and longitude values above in Google map, I got the correct zip code 98052. 
+After searching the latituide and longitude values above in Google map, I get the correct zip code *98052* for *"980452'*. 
 
-Then I changed the value to "981-2" and ran the code again. However, this time, I didn't get anything. This zip code is under the "relations" structure. Considering the fact that the relations table is not included in the database file, I did not update the value. 
+I try to change the value to *"981-2"* and run the code. However, I couldn't get anything by searching the nodes id when *'addr:postcode'* equals to *"981-2"*. It turns out that this zip code is under the *"relations"* structure. Considering the fact that the relations table is not included in the database file, I leave the value as it is. 
+
+Below is the function I use to update the post codes:
+
+```Python
+mapping = { "980452": "98052"}
+
+def update(postcode, mapping): 
+    # update the entry with correct zip code:
+    if postcode in mapping:
+        postcode = mapping[postcode]
+    else:  # update all 9-digit zip codes to 5 digits
+        postcode = postcode.split("-")[0]  
+    return postcode
+```
+This should update the incorrect post codes and make all post codes 5 digits. 
 
 ### Street Names
 
@@ -45,7 +60,7 @@ There are quite a few street names ending with house/apartment/suite numbers. Th
 
 #### Overabbreviated and misspelled street names
 
-I've created a *mapping* variable to map out the words that needs correction, e.g., words that are not capilized or misspelled and abbreviated. After having my *mapping* variable, I used the following function to correct them in *update_street_names*:
+I've created a *mapping* variable to map out the words that needs correction, e.g., words that are not capilized or misspelled and abbreviated. After having my *mapping* variable, I use the following function to correct them in *update_street_names.py*:
 
 ```Python
 def update(name, mapping): 
@@ -64,7 +79,7 @@ This would update all overabbreviated street names, i.e., *"144th pl ne"* becomi
 
 #### FIXME street names
 
-In addition, there are 8 street names that have values as "FIXME". According to OpenStreetMap Wiki, it is a "description of a (possible) error in the map". I looked up the street names using the latitude and longitude values. 
+In addition, there are 8 street names that have values as "FIXME". According to OpenStreetMap Wiki, it is a *"description of a (possible) error in the map"*. I try to look up the street names using the latitude and longitude values. 
 
 ```sql
 sqlite> SELECT nodes.id, nodes.lat, nodes.lon
@@ -72,7 +87,7 @@ FROM nodes
     JOIN (SELECT DISTINCT(id) FROM nodes_tags WHERE value='FIXME') i
     ON nodes.id=i.id;
 ```
-Here's what I got:
+Below are the node latitude and longitude values of these *"FIXME"* tags:
 
 ```sql
 1191705889|47.6170688|-122.0261962
@@ -84,8 +99,8 @@ Here's what I got:
 1191706019|47.6172568|-122.0269602
 1191706040|47.6172459|-122.0270917
 ```
-Using google map, I've found that these nodes are all on the same street, *"235th Avenue Northeast"*.
-So I added *{"FIXME": "235th Avenue Northeast"}* to my *mapping* variable before I started to clean the data.
+Using google map, I've come to the conclusion that these nodes are all on the same street, *"235th Avenue Northeast"*.
+So I add *{"FIXME": "235th Avenue Northeast"}* to my *mapping* variable before I start to clean the data.
 
 ## Overview of the Data
 

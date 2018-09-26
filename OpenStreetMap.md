@@ -93,7 +93,7 @@ So I added *{"FIXME": "235th Avenue Northeast"}* to my *mapping* variable before
 
 ```text
 map_bellevue_clean.osm ......... 604 MB
-map_bellevue.db .......... 398 MB
+map_bellevue.db .......... 335 MB
 nodes.csv ............. 221 MB
 nodes_tags.csv ........ 18.5 MB
 ways.csv .............. 19.4 MB
@@ -106,14 +106,14 @@ ways_nodes.cv ......... 71.5 MB
 ```sql
 sqlite> SELECT COUNT(*) FROM nodes;
 ```
-2647743
+2647742
 
 ### Number of ways
 
 ```sql
 sqlite> SELECT COUNT(*) FROM ways;
 ```
-325941
+325940
 
 ### Number of unique users
 
@@ -121,7 +121,7 @@ sqlite> SELECT COUNT(*) FROM ways;
 sqlite> SELECT COUNT(DISTINCT(e.uid))          
 FROM (SELECT uid FROM nodes UNION ALL SELECT uid FROM ways) e;
 ```
-1949
+1948
 
 ### Top 5 contributing users
 
@@ -134,7 +134,6 @@ LIMIT 5;
 ```
 
 ```sql
-user|num
 Glassman|650583
 SeattleImport|465770
 Glassman_Import|197787
@@ -152,6 +151,7 @@ FROM
 	HAVING num = 1) u;
 ```
 386
+
 ## Additional Data Exploration
 
 ### Top 10 appearing amenities

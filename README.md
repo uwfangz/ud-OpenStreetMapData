@@ -1,4 +1,4 @@
-# Wrangle OpenStreetMap Data Project
+# Overview of Wrangle OpenStreetMap Data Project
 By Vicky Fang<br>
 ### Contents:
 * **OpenStreetMap.md:** A report that documents the data wrangling process

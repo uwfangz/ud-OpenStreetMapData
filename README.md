@@ -18,3 +18,7 @@ By Vicky Fang<br>
 * [19.7. xml.etree.ElementTree — The ElementTree XML API](https://docs.python.org/2/library/xml.etree.elementtree.html)
 
 * [Writing a csv file into SQL Server database using python](https://stackoverflow.com/questions/21257899/writing-a-csv-file-into-sql-server-database-using-python)
+
+### Updates:
+* 2018-09-28: Added more content to the ["Most popular cuisines"](OpenStreetMap.md/#most-popular-cuisines) section of *OpenStreetMap.md*.
+* 2018-09-28: Added ["Schools in Bellevue"](OpenStreetMap.md/#schools-in-bellevue) section to *OpenStreetMap.md*. 

@@ -233,7 +233,18 @@ thai|86
 chinese|85
 japanese|67
 ```
-Asian restaurants seem popular in Bellevue. 
+Asian restaurants seem popular in Bellevue. I also want to know if there's any good restaurant in the area. Therefor, I try to query for restaurant with stars.
+
+```sql
+sqlite> SELECT nodes_tags.value, COUNT(*) as num
+FROM nodes_tags 
+    JOIN (SELECT DISTINCT(id) FROM nodes_tags WHERE value='restaurant') i
+    ON nodes_tags.id=i.id
+WHERE nodes_tags.key='stars'
+GROUP BY nodes_tags.value
+ORDER BY num DESC;
+```
+However, there's nothing returned after this query. *OpenStreetMap Wiki* tellls me that *"stars"* indicates restrant with Michelin star. No wonder the query is in vain. I think the bar for restaurant ranking is too high. I would recommend adding yelp ranking stars instead of Michelin. First of all, yelp has already included most restaurant data. Secondly, it's used by millions of users and it has some authority in restaurant reviews. The problem I would foresee is that yelp ranking is not fixed. You may see a restaurant is ranked at 5 stars today, but it drops to 4 stars tomorrow. This means that if we adopt the yelp ranking, the data probably needs to be constantly updated. So whether we should borrow the yelp ranking or use a customized ranking system remains a question. However, one thing for sure, the Michelin star ranking cannot be the only restaurant ranking. 
 
 ### Top 10 appearing tourism
 ```sql
@@ -256,8 +267,8 @@ museum|15
 guest_house|7
 gallery|4
 ```
-
 ### Attractions in Bellevue
+
 ```sql
 sqlite> SELECT nodes_tags.value
 FROM nodes_tags 
@@ -291,6 +302,33 @@ Underground Tour
 Wings over Washington
 Xanadu 2.0
 ```
+### Schools in Bellevue
+
+```sql
+sqlite> SELECT nodes_tags.value, COUNT(*) as num
+FROM nodes_tags 
+    JOIN (SELECT DISTINCT(id) FROM nodes_tags WHERE value='school') i
+    ON nodes_tags.id=i.id
+WHERE nodes_tags.key='name'
+GROUP BY nodes_tags.value
+ORDER BY num DESC
+LIMIT 10;
+```
+```sql
+Huntington Learning Center|2
+Interagency Ryther Center|2
+Kumon|2
+The Goddard School|2
+4/4 School of Music|1
+44 School of Music|1
+A+ Alternative School|1
+ALPS Language School|1
+APP at Lincoln|1
+Academy Schools|1
+```
+While searching all the schools in Bellevue, I've found that there are quite a few learning centers, i.e., *"Kumon"* and *"Huntington Learning Center"*. Since these learning centers provide tutoring services and test prep, I would suggest adding a new category, *"learning_center"* and grouping these institutes under the "learning_center" category, just as *"driving_school"* and *"language_school"*. Thus, when parents are searching schools for their kids in the area, they can exclude these options in their search results. Also, for those who are looking for tutoring services, they can easily locate the services. 
+
+In addition, according to the [tags under *amenity=school*](https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dschool) on *OpenStreetMap Wiki*, there seems no tag to indicate whether the school is private, public or charter, and the school ranking in the area. I think these are all useful information for parents who are researching schools in the area for their kids. While it's easy to decide whether the school is public, private or charter, it's not easy to rank schools, especially from pre-school to middle school. I did a quick search online and I have not found any standard school rankings. The Zillow website of *"[School Reviews for Bellevue](https://www.zillow.com/bellevue-wa/schools/)"* offers an interstring insight. You can see the average test scores of a selected school on Math and Reading and you can compare the scores to average test scores in Bellevue School Distric and the average in Washington state. This is one way to rank and compare schools. I think before we include school ranking in the area to improve the data, we need to either come up with a ranking system or decide on a generally-accepted ranking system. This also involves data analysis and research on the schools in the area.
 
 # Conclusion
 
